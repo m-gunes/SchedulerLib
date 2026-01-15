@@ -12,7 +12,7 @@ public class SchedularTest {
     @Test
     void test()
     {
-        var scheduler = new Scheduler(1, TimeUnit.SECONDS).schedule(() -> ++m_count);
+        var scheduler = Scheduler.of(1, TimeUnit.SECONDS).schedule(() -> ++m_count);
         ThreadUtil.sleep(5_000);
         scheduler.cancel();
         Assertions.assertEquals(6, m_count);

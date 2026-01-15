@@ -28,29 +28,39 @@ public class Scheduler {
         };
     }
 
-    public Scheduler(long interval, TimeUnit timeUnit)
-    {
-        this(timeUnit.toMillis(interval));
-    }
-    public Scheduler(long intervalInMillis)
-    {
-        this(intervalInMillis, 0);
-    }
-    public Scheduler(long interval, long delay, TimeUnit timeUnit)
-    {
-        this(timeUnit.toMillis(interval), timeUnit.toMillis(delay));
-    }
     public Scheduler(long intervalInMillis, long delay)
     {
         m_timer = new Timer();
         m_intervalInMillis = intervalInMillis;
         m_delay = delay;
     }
+
+    public static Scheduler of(long interval, TimeUnit timeUnit)
+    {
+        return of(timeUnit.toMillis(interval));
+    }
+
+    public static Scheduler of(long intervalInMillis)
+    {
+        return of(intervalInMillis, 0);
+    }
+
+    public static Scheduler of(long interval, long delay, TimeUnit timeUnit)
+    {
+        return of(timeUnit.toMillis(interval), timeUnit.toMillis(delay));
+    }
+
+    public static Scheduler of(long intervalInMillis, long delay)
+    {
+        return new Scheduler(intervalInMillis, delay);
+    }
+
     public final Scheduler schedule(Runnable task)
     {
         m_timer.scheduleAtFixedRate(createTimerTask(task), m_delay, m_intervalInMillis);
         return this;
     }
+
     public final void cancel()
     {
         m_timer.cancel();
