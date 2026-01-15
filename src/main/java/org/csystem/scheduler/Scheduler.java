@@ -1,5 +1,7 @@
 package org.csystem.scheduler;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,28 +14,45 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Scheduler {
+    private final Timer m_timer;
+    private final long m_intervalInMillis;
+    private final long m_delay;
+
+    private static TimerTask createTimerTask(Runnable task)
+    {
+        return new TimerTask() {
+            public void run()
+            {
+                task.run();
+            }
+        };
+    }
+
     public Scheduler(long interval, TimeUnit timeUnit)
     {
-        throw new UnsupportedOperationException("Todo");
+        this(timeUnit.toMillis(interval));
     }
     public Scheduler(long intervalInMillis)
     {
-        throw new UnsupportedOperationException("Todo");
+        this(intervalInMillis, 0);
     }
     public Scheduler(long interval, long delay, TimeUnit timeUnit)
     {
-        throw new UnsupportedOperationException("Todo");
+        this(timeUnit.toMillis(interval), timeUnit.toMillis(delay));
     }
     public Scheduler(long intervalInMillis, long delay)
     {
-        throw new UnsupportedOperationException("Todo");
+        m_timer = new Timer();
+        m_intervalInMillis = intervalInMillis;
+        m_delay = delay;
     }
     public final Scheduler schedule(Runnable task)
     {
-        throw new UnsupportedOperationException("Todo");
+        m_timer.scheduleAtFixedRate(createTimerTask(task), m_delay, m_intervalInMillis);
+        return this;
     }
     public final void cancel()
     {
-        throw new UnsupportedOperationException("Todo");
+        m_timer.cancel();
     }
 }
