@@ -39,7 +39,8 @@ public class AlarmLocalTimeConstructorTest {
         var time = LocalTime.now().plusSeconds(SECOND);
 
         Alarm alarm = new Alarm(time);
-        alarm.start(createRunnable(time));
+        alarm.start(() -> Assertions.assertEquals(LocalTime.now().withNano(0), time.withNano(0)));
+
 
         ThreadUtil.sleep(MILLISECOND);
         // Soyle bir durum var:
